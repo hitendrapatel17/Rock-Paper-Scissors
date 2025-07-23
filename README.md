@@ -12,7 +12,7 @@ A fun Rock Paper Scissors game built using HTML, CSS, and JavaScript. Click on a
 ![Game Preview](images/stone.jpg)
 
 ## 🚀 Demo
-Coming soon... (You can use GitHub Pages to host this)
+https://hitendrapatel17.github.io/Rock-Paper-Scissors/
 
 ## 🛠️ Tech Used
 - HTML
