@@ -1,86 +1,69 @@
- let userscore=0;
-let compscore =0;
+let userscore = 0;
+let compscore = 0;
 
-// score increment
-const user_score = document.getElementById("user_score");   
-const comp_score = document.getElementById("comp_score");   
+const user_score = document.getElementById("user_score");
+const comp_score = document.getElementById("comp_score");
 const msg = document.getElementById("msg");
-
-
+const resultDiv = document.getElementById("result");
 const choices = document.querySelectorAll(".choice");
 
-const gencompchoice =() =>{
-    const options = ["stone","paper","scissor"];
-   const randindx = Math.floor(Math.random()*3);
+// Generate computer's choice
+const gencompchoice = () => {
+    const options = ["stone", "paper", "scissor"];
+    const randindx = Math.floor(Math.random() * 3);
     return options[randindx];
 };
 
+// Check winner
+function checkwin(userchoice, compchoice) {
+    if (userchoice === compchoice) {
+        msg.innerHTML = "It's a draw!";
+        msg.style.backgroundColor = "gray";
+        resultDiv.innerText = `Both chose ${userchoice}`;
+        return;
+    }
 
-// checking the winner using function
- function checkwin(userchoice,compchoice){
-     if(userchoice==="stone" && compchoice==="paper"){
-        console.log("computer wins");
-        compscore++;
-        comp_score.innerHTML =compscore
-        msg.innerHTML = `YOU lose ! ${compchoice} beats your ${userchoice} `  ;
-        msg.style.backgroundColor ="red";
-        
-     }
-     else if(userchoice==="stone" && compchoice==="scissor"){
-        console.log("user wins");
-        userscore++;  // line1 
-        user_score.innerHTML =userscore;
-        msg.innerHTML = `you won ! your ${userchoice} beats ${compchoice}`;
+    const win =
+        (userchoice === "stone" && compchoice === "scissor") ||
+        (userchoice === "paper" && compchoice === "stone") ||
+        (userchoice === "scissor" && compchoice === "paper");
+
+    if (win) {
+        userscore++;
+        user_score.innerHTML = userscore;
+        msg.innerHTML = `You won! ${userchoice} beats ${compchoice}`;
         msg.style.backgroundColor = "green";
-     }
-     else if(userchoice==="paper" && compchoice==="stone"){
-        console.log("user wins");
-        userscore++;  // line1 
-        user_score.innerHTML =userscore;
-        msg.innerHTML = `you won ! your ${userchoice} beats ${compchoice}`;
-        msg.style.backgroundColor = "green";
-     }
-     else if(userchoice==="paper" && compchoice==="scissor"){
-        console.log("computer wins");
+        resultDiv.innerText = `You: ${userchoice} | Computer: ${compchoice}`;
+    } else {
         compscore++;
-        comp_score.innerHTML =compscore
-        msg.innerHTML = `YOU lose ! ${compchoice} beats your ${userchoice} `  ;
-        msg.style.backgroundColor ="red";
-     }
-     else if(userchoice==="scissor" && compchoice==="stone"){
-        console.log("computer wins");
-        compscore++;
-        comp_score.innerHTML =compscore
-        msg.innerHTML = `YOU lose ! ${compchoice} beats your ${userchoice} `  ;
-        msg.style.backgroundColor ="red";
-     }
-     else if(userchoice==="scissor" && compchoice==="paper"){
-        console.log("user wins");
-        userscore++;  // line1 
-        user_score.innerHTML =userscore;
-        msg.innerHTML = `you won ! your ${userchoice} beats ${compchoice}`;
-        msg.style.backgroundColor = "green";
-     }
+        comp_score.innerHTML = compscore;
+        msg.innerHTML = `You lose! ${compchoice} beats ${userchoice}`;
+        msg.style.backgroundColor = "red";
+        resultDiv.innerText = `You: ${userchoice} | Computer: ${compchoice}`;
+    }
+}
+
+// Play one round
+const playgame = (userchoice) => {
+    const compchoice = gencompchoice();
+    checkwin(userchoice, compchoice);
 };
 
-const playgame = (userchoice)=>{
-    console.log("user choice" , userchoice);
-    // comp choice 
-    const compchoice= gencompchoice();
-    console.log("computer choice",compchoice);
-
-    if(userchoice===compchoice){
-        console.log("game draw");
-    }
-    else{
-        checkwin(userchoice,compchoice);
-    }
-};
-
-choices.forEach((choice)=>{
-    choice.addEventListener("click",()=>{
+// Add event listeners to each choice
+choices.forEach((choice) => {
+    choice.addEventListener("click", () => {
         const userchoice = choice.getAttribute("id");
-        // console.log("choice is clicked",userchoice);
         playgame(userchoice);
     });
+});
+
+// Reset button logic
+document.getElementById("reset").addEventListener("click", () => {
+    userscore = 0;
+    compscore = 0;
+    user_score.innerHTML = 0;
+    comp_score.innerHTML = 0;
+    msg.innerHTML = "Place your move";
+    msg.style.backgroundColor = "black";
+    resultDiv.innerText = "";
 });
